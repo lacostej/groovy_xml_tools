@@ -1,13 +1,12 @@
-  <!-- my comment -->
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- my comment -->
 <root>
- <!-- foobar -->
+  <!-- foobar -->
   <child2 foo="bar">
-      <two/>
-    	<one/>
+    <two/>
+    <one/>
   </child2>
-
   <child3/>
-
   <child1/>
   <!-- second -->
   <child1/>

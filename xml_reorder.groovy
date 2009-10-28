@@ -19,6 +19,7 @@ class MyXmlNodePrinter extends XmlNodePrinter {
   CommentCollectingParser parser
   Node modelRoot
   
+  /* if modelRoot is null, we just pretty print */
   MyXmlNodePrinter(Node modelRoot, CommentCollectingParser parser, PrintWriter writer) {
     super(writer)
     super.setPreserveWhitespace(true)
@@ -37,7 +38,8 @@ class MyXmlNodePrinter extends XmlNodePrinter {
   }
 
   public void printList(List list, XmlNodePrinter.NamespaceContext ctx) {
-    reorderList(list)
+    if (modelRoot != null)
+      reorderList(list)
     super.printList(list, ctx)
   }
 
@@ -67,7 +69,6 @@ class MyXmlNodePrinter extends XmlNodePrinter {
     }
     return idx
   }
-
 
   private String localPart(Object o) {
     if (o instanceof String) {
@@ -126,15 +127,21 @@ class MyXmlNodePrinter extends XmlNodePrinter {
 }
 
 static def reorderXml(File modelFile, File inputFile) {
-  def modelParser = new XmlParser()
-  def parser = new CommentCollectingParser()
+  def model = null
+  if (modelFile != null) {
+    model = new XmlParser().parse(modelFile)
+  }
 
-  def model = modelParser.parse(modelFile)
+  def parser = new CommentCollectingParser()
   def root = parser.parse(inputFile)
 
   def writer = new StringWriter()
   new MyXmlNodePrinter(model, parser, new PrintWriter(writer)).print(root)
-  return writer.toString()
+  return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + writer.toString()
+}
+
+static def prettyPrintXml(File inputFile) {
+  reorderXml(null, inputFile)
 }
 
 modelFilename = this.args[0]
@@ -142,5 +149,4 @@ inputFilename = this.args[1]
 
 def result = reorderXml(new File(modelFilename), new File(inputFilename))
 
-println "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
 print result
