@@ -1,0 +1,12 @@
+<!-- my comment -->
+<root>
+  <!-- foobar -->
+  <child2 foo="bar">
+    <two/>
+    <one/>
+  </child2>
+  <child3/>
+  <child1/>
+  <!-- second -->
+  <child1/>
+</root>

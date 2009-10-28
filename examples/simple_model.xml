@@ -1,0 +1,9 @@
+<!-- my comment -->
+<root>
+  <child1/>
+  <child2>
+    <one/>
+    <two/>
+  </child2>
+  <child3/>
+</root>
