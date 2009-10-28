@@ -6,6 +6,11 @@ def expected = new File('examples/simple_ex1_expected.xml').text
 
 assert reordered == expected
 
+// works with groovy XML DSL files
+reordered = xml_reorder.reorderXmlWithGroovyModel(new File('examples/simple_model_xml.groovy'), new File('examples/simple_ex1.xml'))
+
+assert reordered == expected
+
 // also works with text
 reordered = xml_reorder.reorderXml(new File('examples/simple_model.xml').text, new File('examples/simple_ex1.xml').text)
 

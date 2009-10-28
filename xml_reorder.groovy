@@ -11,6 +11,7 @@
 
 // require(groupId:'xmlunit', artifactId:'xmlunit', version:'1.0')
 import org.custommonkey.xmlunit.*
+import eval_groovy_xml_dsl
 
 groovy.grape.Grape.grab(group:'xmlunit', module:'xmlunit', version:'1.0')
 
@@ -139,6 +140,18 @@ static def reorderXml(String modelText, String inputText) {
 
   def parser = new CommentCollectingParser()
   def root = parser.parseText(inputText)
+  return reorderXml(model, root, parser)
+}
+
+static def reorderXmlWithGroovyModel(File groovyModelFile, File inputFile) {
+  def model = null
+  if (groovyModelFile != null) {
+    def modelText = eval_groovy_xml_dsl.eval_groovy_to_xml(groovyModelFile)
+    model = new XmlParser().parseText(modelText)
+  }
+
+  def parser = new CommentCollectingParser()
+  def root = parser.parse(inputFile)
   return reorderXml(model, root, parser)
 }
 

@@ -1,0 +1,6 @@
+<rec:records xmlns:rec='http://groovy.codehaus.org'>
+  <car name='HSV Maloo' make='Holden' year='2006'>
+    <country>Australia</country>
+    <record type='speed'> Truck with speed of 271kph</record>
+  </car>
+</rec:records>
