@@ -3,11 +3,11 @@ The model can be written as XML or as a simple Groovy DSL.
 
 How to use:
 
-groovy xml_reoder.groovy model.xml original.xml > reformatted.xml
+groovy xml_reorder.groovy model.xml original.xml > reformatted.xml
 
 or
 
-groovy xml_reoder.groovy model.groovy original.xml > reformatted.xml
+groovy xml_reorder.groovy model.groovy original.xml > reformatted.xml
 
 
 Known limitations
