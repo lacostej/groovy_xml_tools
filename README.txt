@@ -1,4 +1,5 @@
 A small groovy scripts that allows to reorder an XML file based on a given model.
+The model can be written as XML or as a simple Groovy DSL.
 
 How to use:
 
