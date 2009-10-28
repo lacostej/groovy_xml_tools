@@ -21,15 +21,15 @@ groovy.grape.Grape.grab(group:'xmlunit', module:'xmlunit', version:'1.0')
  *  and a tree representation of the model
  * prints out a pretty-print version of the reordered XML, together with the comments.
  **/
-class MyXmlNodePrinter extends XmlNodePrinter {
+class XmlNodeTransformer extends XmlNodePrinter {
   CommentCollectingParser parser
   Node modelRoot
   
   /* if modelRoot is null, we just pretty print */
-  MyXmlNodePrinter(Node modelRoot, CommentCollectingParser parser, PrintWriter writer) {
+  XmlNodeTransformer(Node reorderModelRoot, CommentCollectingParser parser, PrintWriter writer) {
     super(writer)
     super.setPreserveWhitespace(true)
-    this.modelRoot = modelRoot
+    this.modelRoot = reorderModelRoot
     this.parser = parser
   }
 
@@ -168,7 +168,7 @@ static def reorderXml(File modelFile, File inputFile) {
 
 static def reorderXml(Node model, Node root, CommentCollectingParser parser) {
   def writer = new StringWriter()
-  new MyXmlNodePrinter(model, parser, new PrintWriter(writer)).print(root)
+  new XmlNodeTransformer(model, parser, new PrintWriter(writer)).print(root)
   return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + writer.toString()
 }
 
