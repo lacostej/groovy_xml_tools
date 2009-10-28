@@ -5,6 +5,11 @@ How to use:
 
 groovy xml_reoder.groovy model.xml original.xml > reformatted.xml
 
+or
+
+groovy xml_reoder.groovy model.groovy original.xml > reformatted.xml
+
+
 Known limitations
 * hardcoded XML declaration...
 * no encoding handling (parsing, writing...)
