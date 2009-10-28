@@ -9,6 +9,11 @@
  **/
 
 
+// require(groupId:'xmlunit', artifactId:'xmlunit', version:'1.0')
+import org.custommonkey.xmlunit.*
+
+groovy.grape.Grape.grab(group:'xmlunit', module:'xmlunit', version:'1.0')
+
 /**
  * an XmlNodePrinter that
  * given the parser that was used to parse the original xml
@@ -126,6 +131,17 @@ class MyXmlNodePrinter extends XmlNodePrinter {
   }
 }
 
+static def reorderXml(String modelText, String inputText) {
+  def model = null
+  if (modelText != null) {
+    model = new XmlParser().parseText(modelText)
+  }
+
+  def parser = new CommentCollectingParser()
+  def root = parser.parseText(inputText)
+  return reorderXml(model, root, parser)
+}
+
 static def reorderXml(File modelFile, File inputFile) {
   def model = null
   if (modelFile != null) {
@@ -134,7 +150,10 @@ static def reorderXml(File modelFile, File inputFile) {
 
   def parser = new CommentCollectingParser()
   def root = parser.parse(inputFile)
+  return reorderXml(model, root, parser)
+}
 
+static def reorderXml(Node model, Node root, CommentCollectingParser parser) {
   def writer = new StringWriter()
   new MyXmlNodePrinter(model, parser, new PrintWriter(writer)).print(root)
   return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + writer.toString()
@@ -142,6 +161,10 @@ static def reorderXml(File modelFile, File inputFile) {
 
 static def prettyPrintXml(File inputFile) {
   reorderXml(null, inputFile)
+}
+
+static def prettyPrintXml(String inputText) {
+  reorderXml(null, inputText)
 }
 
 modelFilename = this.args[0]
