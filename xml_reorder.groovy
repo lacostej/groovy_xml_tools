@@ -141,7 +141,7 @@ static def reorderXml(String modelText, String inputText) {
 
   def parser = new CommentCollectingParser()
   def root = parser.parseText(inputText)
-  return transformXml(model, root, parser, null)
+  return transformXml(model, root, parser, null, null)
 }
 
 static def reorderXmlWithGroovyModel(File groovyModelFile, File inputFile) {
@@ -153,7 +153,7 @@ static def reorderXmlWithGroovyModel(File groovyModelFile, File inputFile) {
 
   def parser = new CommentCollectingParser()
   def root = parser.parse(inputFile)
-  return transformXml(model, root, parser, null)
+  return transformXml(model, root, parser, null, null)
 }
 
 static def reorderXml(File modelFile, File inputFile) {
@@ -164,10 +164,10 @@ static def reorderXml(File modelFile, File inputFile) {
 
   def parser = new CommentCollectingParser()
   def root = parser.parse(inputFile)
-  return transformXml(model, root, parser, null)
+  return transformXml(model, root, parser, null, null)
 }
 
-static def transformXml(File reorderModelFile, File inputFile, String replaceContentScript) {
+static def transformXml(File reorderModelFile, File inputFile, String replaceContentScript, List transformArgs) {
   def reorderModel = null
   if (reorderModelFile != null) {
     reorderModel = new XmlParser().parse(reorderModelFile)
@@ -175,20 +175,21 @@ static def transformXml(File reorderModelFile, File inputFile, String replaceCon
 
   def parser = new CommentCollectingParser()
   def root = parser.parse(inputFile)
-  return transformXml(reorderModel, root, parser, replaceContentScript)
+  return transformXml(reorderModel, root, parser, replaceContentScript, transformArgs)
 }
 
-static def applyTransformScript(Node root, String transformScript) {
+static def applyTransformScript(Node root, String transformScript, transformArgs) {
   Binding binding = new Binding()
   binding.setVariable("root", root)
+  binding.setVariable("args", transformArgs)
   GroovyShell shell = new GroovyShell(binding)
   return shell.evaluate(transformScript)
 }
 
-static def transformXml(Node model, Node root, CommentCollectingParser parser, String transformScript) {
+static def transformXml(Node model, Node root, CommentCollectingParser parser, String transformScript, List transformArgs) {
   def writer = new StringWriter()
   if (transformScript) {
-    def res = applyTransformScript(root, transformScript)
+    def res = applyTransformScript(root, transformScript, transformArgs)
     // some debugging help
     //if (res)
     //  println res

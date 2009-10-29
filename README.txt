@@ -14,6 +14,8 @@ or
 
 groovy xml_reorder.groovy model.groovy original.xml > reformatted.xml
 
+groovy xml_transform.groovy original.xml transform_script.groovy [args] > transformed.xml
+
 
 Known limitations
 * hardcoded XML declaration...
