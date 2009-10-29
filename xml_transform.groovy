@@ -7,7 +7,8 @@ static def xml_transform(File original, File replaceContentScript, List args) {
 inputFilename = this.args[0]
 replaceContentScript = this.args[1]
 
-def result = xml_transform(new File(inputFilename), new File(replaceContentScript), this.args[2..-0])
+def args = this.args[2..-1]
+def result = xml_transform(new File(inputFilename), new File(replaceContentScript), args)
 
 print result
 
