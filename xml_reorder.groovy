@@ -126,6 +126,7 @@ class XmlNodeTransformer extends XmlNodePrinter {
     return l
   }
 
+  // print with comments
   protected void print(Node n, XmlNodePrinter.NamespaceContext ctx) {
     parser.commentsFor(n).each{printComment(it)}
     super.print(n, ctx)
@@ -140,7 +141,7 @@ static def reorderXml(String modelText, String inputText) {
 
   def parser = new CommentCollectingParser()
   def root = parser.parseText(inputText)
-  return reorderXml(model, root, parser)
+  return transformXml(model, root, parser, null)
 }
 
 static def reorderXmlWithGroovyModel(File groovyModelFile, File inputFile) {
@@ -152,7 +153,7 @@ static def reorderXmlWithGroovyModel(File groovyModelFile, File inputFile) {
 
   def parser = new CommentCollectingParser()
   def root = parser.parse(inputFile)
-  return reorderXml(model, root, parser)
+  return transformXml(model, root, parser, null)
 }
 
 static def reorderXml(File modelFile, File inputFile) {
@@ -163,11 +164,35 @@ static def reorderXml(File modelFile, File inputFile) {
 
   def parser = new CommentCollectingParser()
   def root = parser.parse(inputFile)
-  return reorderXml(model, root, parser)
+  return transformXml(model, root, parser, null)
 }
 
-static def reorderXml(Node model, Node root, CommentCollectingParser parser) {
+static def transformXml(File reorderModelFile, File inputFile, String replaceContentScript) {
+  def reorderModel = null
+  if (reorderModelFile != null) {
+    reorderModel = new XmlParser().parse(reorderModelFile)
+  }
+
+  def parser = new CommentCollectingParser()
+  def root = parser.parse(inputFile)
+  return transformXml(reorderModel, root, parser, replaceContentScript)
+}
+
+static def applyTransformScript(Node root, String transformScript) {
+  Binding binding = new Binding()
+  binding.setVariable("root", root)
+  GroovyShell shell = new GroovyShell(binding)
+  return shell.evaluate(transformScript)
+}
+
+static def transformXml(Node model, Node root, CommentCollectingParser parser, String transformScript) {
   def writer = new StringWriter()
+  if (transformScript) {
+    def res = applyTransformScript(root, transformScript)
+    // some debugging help
+    //if (res)
+    //  println res
+  }
   new XmlNodeTransformer(model, parser, new PrintWriter(writer)).print(root)
   return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + writer.toString()
 }

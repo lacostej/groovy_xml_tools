@@ -1,2 +1,3 @@
 groovy test_xml_reorder.groovy
 groovy test_eval_groovy_xml_dsl.groovy
+groovy test_xml_transform.groovy

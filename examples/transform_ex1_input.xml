@@ -1,0 +1,11 @@
+<!-- my comment -->
+<root>
+  <child1/>
+  <!-- comment -->
+  <child1/>
+  <child2>
+    <one>HI ho</one>
+    <two/>
+  </child2>
+  <child3/>
+</root>
