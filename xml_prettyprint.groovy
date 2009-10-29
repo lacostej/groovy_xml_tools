@@ -1,7 +1,7 @@
-import xml_reorder
+import transform_functions
 
 inputFilename = this.args[0]
 
-def result = xml_reorder.prettyPrintXml(new File(inputFilename))
+def result = transform_functions.prettyPrintXml(new File(inputFilename))
 
 print result
