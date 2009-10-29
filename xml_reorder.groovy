@@ -13,7 +13,7 @@
 import org.custommonkey.xmlunit.*
 import eval_groovy_xml_dsl
 
-groovy.grape.Grape.grab(group:'xmlunit', module:'xmlunit', version:'1.0')
+//groovy.grape.Grape.grab(group:'xmlunit', module:'xmlunit', version:'1.0')
 
 /**
  * an XmlNodePrinter that
